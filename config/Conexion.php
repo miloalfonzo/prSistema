@@ -41,7 +41,4 @@ if (!function_exists('ejecutarConsulta')){
     }
 }
 
-
-
-
 ?>
