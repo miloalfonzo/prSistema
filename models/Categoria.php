@@ -21,6 +21,30 @@ Class Categoria {
         WHERE idcategoria='$idcategoria'";
         return ejecutarConsulta($sql);
     }
+
+    //method para desactivar categorias
+    public function desactivar ($idcategoria){
+        $sql = "UPDATE categoria SET condicion='0' WHERE idcategoria='$idcategoria'";
+        return ejecutarConsulta($sql);
+    }
+
+    //method para activar categorias
+    public function activar ($idcategoria){
+        $sql = "UPDATE categoria SET condicion='1' WHERE idcategoria='$idcategoria'";
+        return ejecutarConsulta($sql);
+    }
+
+    //implementar un method para mostrar los datos de un registro a modificar
+    public function mostrar($idcategoria){
+        $sql="SELECT * FROM categoria WHERE idcategoria='$idcategoria'";
+        return ejecutarConsultaSimpleFila($sql);
+    }
+
+    //method para listar los registros
+    public function listar(){
+        $sql="SELECT * FROM categoria";
+        return ejecutarConsulta($sql);
+    }
 }
 
 ?>
