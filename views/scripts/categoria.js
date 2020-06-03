@@ -23,7 +23,7 @@ function mostrarForm(flag){
     if (flag){
         $("#listadoregistros").hide();
         $("#formularioregistros").show();
-        $("#btnGuardar").prop('disabled', false);
+        $("#btnGuardar").prop('disabled',false);
     } else {
         $("#listadoregistros").show();
         $("#formularioregistros").hide();
@@ -71,6 +71,7 @@ function guardaryeditar(e){
     $.ajax({
         url: "../ajax/categoria.php?op=guardaryeditar",
         type: 'POST',
+        data: formData,
         contentType: false,
         processData: false,
 

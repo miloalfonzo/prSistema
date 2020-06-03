@@ -3,11 +3,11 @@ require_once "../models/Categoria.php";
 
 $categoria= new Categoria();
 
-$idcategoria = isset($_POST["idcategoria"])? limpiarCadea($_POST["idcategoria"]
+$idcategoria = isset($_POST["idcategoria"])? limpiarCadena($_POST["idcategoria"]
 ): "";
-$nombre = isset($_POST["nombre"])? limpiarCadea($_POST["nombre"]
+$nombre = isset($_POST["nombre"])? limpiarCadena($_POST["nombre"]
 ): "";
-$descripcion = isset($_POST["descripcion"])? limpiarCadea($_POST["descripcion"]
+$descripcion = isset($_POST["descripcion"])? limpiarCadena($_POST["descripcion"]
 ): "";
 
 switch ($_GET["op"]){
