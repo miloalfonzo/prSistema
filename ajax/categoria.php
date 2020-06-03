@@ -40,10 +40,10 @@ switch ($_GET["op"]){
 
     case 'listar':
         $rspta=$categoria->listar();
-        //se declara una rray
+        //se declara una array
         $data = Array();
 
-        while ($rspta->fetch_object()){
+        while ($reg=$rspta->fetch_object()){
             $data[]=array(
                 "0"=>$reg->idcategoria, 
                 "1"=>$reg->nombre,
@@ -51,7 +51,7 @@ switch ($_GET["op"]){
                 "3"=>$reg->condicion
             );
             $results = array(
-                "sEcho"=>1 //informacion para el datatables
+                "sEcho"=>1, //informacion para el datatables
                 "iTotalRecords"=>count($data), // envia el total de registros al datatable
                 "iTotalDisplayRecords"=>count($data), //envia el total de registros a visualizar
                 "aaData"=>$data
