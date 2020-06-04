@@ -45,6 +45,12 @@ Class Categoria {
         $sql="SELECT * FROM categoria";
         return ejecutarConsulta($sql);
     }
+
+    //method para listar los registros y mostrar en el select
+    public function select(){
+        $sql="SELECT * FROM categoria where condicion=1";
+        return ejecutarConsulta($sql);
+    }
 }
 
 ?>

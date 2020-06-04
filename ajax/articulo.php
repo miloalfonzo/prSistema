@@ -84,5 +84,18 @@ switch ($_GET["op"]){
  		echo json_encode($results);
 
 	break;
+
+	case "selectCategoria":
+		require_once "../models/Categoria.php";
+		$categoria = new Categoria();
+
+		$rspta = $categoria->select();
+
+		while ($reg = $rspta->fetch_object()){
+
+			echo '<option value=' . $reg->idcategoria . '>' .$reg->nombre . 
+			'</option>';
+		}
+	break;
     }
 ?>
