@@ -45,18 +45,45 @@ require 'header.php';
                         <form name="formulario" id="formulario" method="POST">
                             <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                 <label> Nombre: </label>
-                                <input type="hidden" name="idcategoria" id="idcategoria">
-                                <input type="text" class="form-control" name="nombre" id="nombre" maxLength="50"
-                                placeholder="Nombre" required>
+                                <input type="hidden" name="idarticulo" id="idarticulo">
+                                <input type="text" class="form-control" name="nombre" id="nombre" 
+                                maxLength="100" placeholder="Nombre" required>
                             </div>
+
+                            <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                <label> Categoría: </label>
+                                <select id="idcategoria" name="idcategoria" class="form-control" 
+                                required> </select>
+                            </div>
+
+                            <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                <label> Stock: </label>
+                                <input type="number" class="form-control" name="stock" id="stock" 
+                                required>
+                            </div>
+
                             <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                 <label> Descripción: </label>
-                                <input type="text" class="form-control" name="descripcion" id="descripcion" maxLength="256"
-                                placeholder="Descripcion">
+                                <input type="text" class="form-control" name="descripcion" 
+                                id="descripcion" maxLength="256"placeholder="Descripcion">
                             </div>
+
+                            <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                <label> Imagen: </label>
+                                <input type="file" class="form-control" name="imagen" 
+                                id="imagen">
+                            </div>
+
+                            <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                <label> Código: </label>
+                                <input type="text" class="form-control" name="codigo" 
+                                id="codigo" placeholder="Código de barras">
+                            </div>
+
                             <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <button class="btn btn-primary" type="submit" 
                                 id="btnGuardar"><i class="fa fa-save"></i> Guardar </button>
+                                
                                 <button class="btn btn-danger" onclick="cancelarForm()" 
                                 type="button"><i class="fa fa-arrow-circle-left"></i> Cancelar </button>
                             </div>
