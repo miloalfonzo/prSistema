@@ -96,6 +96,7 @@ function guardaryeditar(e){
 function mostrar(idarticulo){
     $.post("../ajax/articulo.php?op=mostrar", {idarticulo : idarticulo}, 
     function(data, status){
+        
         data = JSON.parse(data);
         mostrarForm(true);
 
@@ -109,6 +110,7 @@ function mostrar(idarticulo){
         $("#imagenmuestra").attr("src", "../files/articulos/"+data.imagen);
         $("#imagenactual").val(data.imagen);
         $("#idarticulo").val(data.idarticulo);
+        generarbarcode();
        
     })
 }
@@ -141,6 +143,12 @@ function activar(idarticulo){
             });
         }
     })
+}
+
+function generarbarcode(){
+
+    codigo=$("#codigo").val();
+    JsBarcode("#barcode", codigo);
 }
 
 init();
