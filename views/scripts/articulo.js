@@ -24,6 +24,10 @@ function limpiar(){
     $("#nombre").val("");
     $("#descripcion").val("");
     $("#stock").val("");
+    $("#imagenmuestra").attr("src", "");
+    $("#imagenactual").val("");
+    $("#print").hide("");
+    $("#idarticulo").val("");
 }
 
 //funcion mostrar form
@@ -33,9 +37,11 @@ function mostrarForm(flag){
         $("#listadoregistros").hide();
         $("#formularioregistros").show();
         $("#btnGuardar").prop('disabled',false);
+        $("#btnagregar").hide();
     } else {
         $("#listadoregistros").show();
         $("#formularioregistros").hide();
+        $("#btnagregar").show();
     }
 }
 
@@ -150,11 +156,12 @@ function generarbarcode(){
 
     codigo=$("#codigo").val();
     JsBarcode("#barcode", codigo);
+    $("#print").show();
 }
 
 //funcion para imprimir el codigo de barras
 function imprimir(){
-    
+
     $("#print").printArea();
 }
 
