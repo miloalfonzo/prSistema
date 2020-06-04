@@ -14,8 +14,7 @@ $imagen=isset($_POST["imagen"])? limpiarCadena($_POST["imagen"]):"";
 switch ($_GET["op"]){
 	case 'guardaryeditar':
 
-		if (!file_exists($_FILES['imagen']['tmp_name']) || !is_uploaded_file($_FILES['imagen']['tmp_name']))
-		{
+		if (!file_exists($_FILES['imagen']['tmp_name']) || !is_uploaded_file($_FILES['imagen']['tmp_name'])){
 			$imagen=$_POST["imagenactual"];
 		}
 		else 

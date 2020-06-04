@@ -13,7 +13,9 @@ function init(){
     $.post("../ajax/articulo.php?op=selectCategoria", function(r){
         $("#idcategoria").html(r);
         $("#idcategoria").selectpicker(refresh);
-    })
+    });
+
+    $("#imagenmuestra").hide();
 }
 
 // función limpiar
@@ -98,10 +100,14 @@ function mostrar(idarticulo){
         mostrarForm(true);
 
         $("#idcategoria").val(data.idcategoria);
+        $("#idcategoria").selectpicker('refresh');
         $("#codigo").val(data.codigo);
         $("#nombre").val(data.nombre);
         $("#stock").val(data.stock);
         $("#descripcion").val(data.descripcion);
+        $("#imagenmuestra").show();
+        $("#imagenmuestra").attr("src", "../files/articulos/"+data.imagen);
+        $("#imagenactual").val(data.imagen);
         $("#idarticulo").val(data.idarticulo);
        
     })
