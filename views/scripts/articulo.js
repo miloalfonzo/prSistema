@@ -145,10 +145,17 @@ function activar(idarticulo){
     })
 }
 
+//funcion para generar el codigo de barras
 function generarbarcode(){
 
     codigo=$("#codigo").val();
     JsBarcode("#barcode", codigo);
+}
+
+//funcion para imprimir el codigo de barras
+function imprimir(){
+    
+    $("#print").printArea();
 }
 
 init();

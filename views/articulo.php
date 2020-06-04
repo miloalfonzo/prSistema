@@ -82,7 +82,9 @@ require 'header.php';
                                 id="codigo" placeholder="Código de barras">
                                 <button class="btn btn-success" type="button"
                                 onclick="generarbarcode()"> Generar </button>
-                                <div>
+                                <button class="btn btn-info" type="button" onclick="imprimir()">
+                                Imprimir </button>
+                                <div id="print">
                                     <svg id="barcode"></svg>
                                 </div>
                             </div>
@@ -108,4 +110,5 @@ require 'header.php';
 require 'footer.php';
 ?>
 <script type="text/javascript" src="../public/js/JsBarcode.all.min.js"></script>
+<script type="text/javascript" src="../public/js/jquery.PrintArea.js"></script>
 <script type="text/javascript" src="scripts/articulo.js"></script>
