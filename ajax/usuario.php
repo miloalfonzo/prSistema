@@ -133,6 +133,28 @@ switch ($_GET["op"]){
 		}
 
 	break;
+
+	case 'verificar':
+		$logina=$_POST['logina'];
+		$clavea=$_POST['clavea'];
+
+		//hash sha256 en el password
+		$clavehash=hash("SHA256", $clavea);
+
+		$rspta=$usuario->verificar($logina, $clavehash);
+
+		$fetch=$rspta->fetch_object();
+
+		if (isset($fetch)){
+			//declaramos variables de sesión
+			$_SESSION['idusuario']=$fetch->idusuario;
+			$_SESSION['nombre']=$fetch->nombre;
+			$_SESSION['imagen']=$fetch->imagen;
+			$_SESSION['login']=$fetch->login;
+		}
+		echo json_encode($fetch);
+
+	break;
 }
 
 ?>
