@@ -50,27 +50,60 @@ require 'header.php';
                         <form name="formulario" id="formulario" method="POST">
                             <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                 <label> Nombre: </label>
-                                <input type="hidden" name="idarticulo" id="idarticulo">
+                                <input type="hidden" name="idusuario" id="idusuario">
                                 <input type="text" class="form-control" name="nombre" id="nombre" 
                                 maxLength="100" placeholder="Nombre" required>
                             </div>
 
                             <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                <label> Categoría: </label>
-                                <select id="idcategoria" name="idcategoria" class="form-control
-                                 selectpicker" data-live-search="true" required> </select>
+                                <label> Tipo Documento: </label>        
+                                <select class="form-control select-picker" name="tipo_documento"
+                                id="tipo_documento" required>
+                                <option value="DNI">DNI</option>
+                                <option value="CUIL">CUIL</option>
+                                <option value="CUIT">CUIT</option>
                             </div>
 
                             <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                <label> Stock: </label>
-                                <input type="number" class="form-control" name="stock" id="stock" 
-                                required>
+                                <label> Número: </label>
+                                <input type="text" class="form-control" name="num_documento" id="num_documento" 
+                                maxLength="20" placeholder="Documento" required>
                             </div>
 
                             <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                <label> Descripción: </label>
-                                <input type="text" class="form-control" name="descripcion" 
-                                id="descripcion" maxLength="256"placeholder="Descripcion">
+                                <label> Número: </label>
+                                <input type="text" class="form-control" name="direccion" id="direccion" 
+                                maxLength="70" placeholder="Direccion">
+                            </div>
+
+                            <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                <label> Teléfono: </label>
+                                <input type="text" class="form-control" name="telefono" 
+                                id="telefono" maxLength="20"placeholder="Teléfono">
+                            </div>
+
+                            <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                <label> Email: </label>
+                                <input type="email" class="form-control" name="email"
+                                id="email" maxLength="50" placeholder="Email" >
+                            </div>
+
+                            <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                <label> Cargo </label>
+                                <input type="text" class="form-control" name="cargo" id="cargo" 
+                                maxLength="20" placeholder="Cargo">
+                            </div>
+
+                            <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                <label> Login: </label>
+                                <input type="text" class="form-control" name="login" id="login" 
+                                maxLength="20" placeholder="Login" required>
+                            </div>
+
+                            <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                <label> Clave: </label>
+                                <input type="password" class="form-control" name="clave" id="clave" 
+                                maxLength="64" placeholder="Clave" required>
                             </div>
 
                             <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
@@ -79,19 +112,6 @@ require 'header.php';
                                 id="imagen">
                                 <input type="hidden" name="imagenactual" id="imagenactual">
                                 <img src="" width="150px" height="120px" id="imagenmuestra">
-                            </div>
-
-                            <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                <label> Código: </label>
-                                <input type="text" class="form-control" name="codigo" 
-                                id="codigo" placeholder="Código de barras">
-                                <button class="btn btn-success" type="button"
-                                onclick="generarbarcode()"> Generar </button>
-                                <button class="btn btn-info" type="button" onclick="imprimir()">
-                                Imprimir </button>
-                                <div id="print">
-                                    <svg id="barcode"></svg>
-                                </div>
                             </div>
 
                             <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
