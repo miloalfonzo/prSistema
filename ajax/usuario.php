@@ -47,8 +47,9 @@ switch ($_GET["op"]){
 
         if (empty($idusuario)){
             $rspta=$usuario->insertar($nombre, $tipo_documento, $num_documento,
-            $direccion, $telefono, $email, $cargo, $login, $clavehash, $imagen);
-            echo $rspta ? "Usuario registrado" : "Usuario no se pudo registrar";
+            $direccion, $telefono, $email, $cargo, $login, $clavehash, $imagen, $_POST['permiso']);
+			echo $rspta ? "Usuario registrado" : "No se puedieron registrar todos 
+			los datos del usuario";
         }
         else {
             $rspta=$usuario->editar($idusuario, $nombre, $tipo_documento, $num_documento,
@@ -101,6 +102,20 @@ switch ($_GET["op"]){
  			"iTotalDisplayRecords"=>count($data), //enviamos el total registros a visualizar
  			"aaData"=>$data);
  		echo json_encode($results);
+
+	break;
+
+	case 'permisos':
+		//obtenemos todos los permisos de la tabla permisos
+		require_once "../models/Permiso.php";
+		$permiso = new Permiso();
+		$rspta = $permiso->listar();
+
+		//mostramos la lista de permisos en la vista y si estan o no marcados
+		while ($reg = $rspta->fetch_object()){
+			echo '<li> <input type="checkbox" name="permiso[]" value="'.
+			$reg->idpermiso.'">.'. $reg->nombre .'</li>';
+		}
 
 	break;
 }

@@ -10,12 +10,29 @@ Class Usuario {
 
     //method para insertar registros
     public function insertar($nombre, $tipo_documento, $num_documento,
-    $direccion, $telefono, $email, $cargo, $login, $clave, $imagen){
+    $direccion, $telefono, $email, $cargo, $login, $clave, $imagen, $permisos){
         $sql = "INSERT INTO usuario (nombre, tipo_documento, num_documento,
         direccion, telefono, email, cargo, login, clave, imagen, condicion)
         VALUES ('$nombre', '$tipo_documento','$num_documento','$direccion', 
         '$telefono', '$email', '$cargo', '$login', '$clave', '$imagen', '1')";
-        return ejecutarConsulta($sql);
+
+        //return ejecutarConsulta($sql);
+        $idusuarionew=ejecutarConsulta_retornarID($sql);
+
+        $num_elementos=0;
+        $sw=true;
+
+        while($num_elementos < count($permisos)){
+
+            $sql_detalle = "INSERT INTO usuario_permisos (idusuario, idpermiso) VALUES 
+            ('$idusuarionew', '$permisos[$num_elementos]')";
+            ejecutarConsulta($sql_detalle) OR $sw = false;
+
+            $num_elementos=$num_elementos + 1;
+
+        }
+
+        return $sw;
     }
 
     //method para editar registros
