@@ -37,12 +37,34 @@ Class Usuario {
 
     //method para editar registros
     public function editar($idusuario, $nombre, $tipo_documento, $num_documento,
-    $direccion, $telefono, $email, $cargo, $login, $clave, $imagen){
+    $direccion, $telefono, $email, $cargo, $login, $clave, $imagen, $permisos){
+
         $sql = "UPDATE usuario SET nombre='$nombre',  tipo_documento='$tipo_documento', 
         num_documento='$num_documento', direccion='$direccion', telefono='$telefono', 
         email='$email', cargo='$cargo', login='$login', clave='$clave', imagen='$imagen'
         WHERE idusuario= '$idusuario";
         return ejecutarConsulta($sql);
+
+        //eliminamos todos los permisos asignados para volverlos a registrar
+        $sqldel="DELETE FROM usuario_permisos WHERE idusuario='$idusuario'";
+        ejecutarConsulta($sqldel);
+
+        $num_elementos=0;
+        $sw=true;
+
+        while($num_elementos < count($permisos)){
+
+            $sql_detalle = "INSERT INTO usuario_permisos (idusuario, idpermiso) VALUES 
+            ('$idusuario', '$permisos[$num_elementos]')";
+            ejecutarConsulta($sql_detalle) OR $sw = false;
+
+            $num_elementos=$num_elementos + 1;
+
+        }
+
+        return $sw;
+
+
     }
 
     //method para desactivar categorias
@@ -66,6 +88,12 @@ Class Usuario {
     //method para listar los registros
     public function listar(){
         $sql="SELECT * FROM usuario";
+        return ejecutarConsulta($sql);
+    }
+
+    //method para listar los permisos marcados
+    public function listarmarcados($idusuario){
+        $sql = "SELECT * FROM usuario_permisos WHERE idusuario ='$idusuario'";
         return ejecutarConsulta($sql);
     }
 
