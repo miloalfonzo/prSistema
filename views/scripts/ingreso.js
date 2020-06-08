@@ -24,6 +24,9 @@ function limpiar(){
     $("#num_comprobante").val("");
     $("#fecha_hora").attr("src", "");
     $("#impuesto").val("");
+    $("#total_compra").val("");
+    $("#filas").remove("");
+    $("#total").html("0");
 }
 
 //funcion mostrar form
@@ -34,6 +37,13 @@ function mostrarForm(flag){
         $("#formularioregistros").show();
         $("#btnGuardar").prop('disabled',false);
         $("#btnagregar").hide();
+        listarArticulos();
+
+        $('#guardar').hide();
+        $('#btnGuardar').show();
+        $('#btnCancelar').show();
+        $('#btnAgregarArt').show();
+
     } else {
         $("#listadoregistros").show();
         $("#formularioregistros").hide();
@@ -100,7 +110,7 @@ function listarArticulos(){
 //Función para guardar o editar
 function guardaryeditar(e){
     e.preventDefault(); //no se activará la accion predeterminada del evento
-    $("#btnGuardar").prop("disabled", true);
+    // $("#btnGuardar").prop("disabled", true);
     var formData = new FormData($("#formulario")[0]);
 
     $.ajax({
@@ -113,7 +123,7 @@ function guardaryeditar(e){
         success: function(datos){
             bootbox.alert(datos);
             mostrarForm(false);
-            tabla.ajax.reload();
+            listar();
         }
     });
     limpiar();
@@ -193,11 +203,56 @@ function agregarDetalle(idarticulo, articulo){
         detalles=detalles+1;
         $('#detalles').append(fila);
         modificarSubtotales();
-        
+
     } else{
 
         alert('Error al ingresar el detalle, revisar los datos del articulo');
     }
+}
+
+function modificarSubtotales(){
+
+    var cant = document.getElementByName('cantidad[]');
+    var prec = document.getElementByName('precio_compra[]');
+    var sub = document.getElementByName('subtotal');
+
+    for (var i = 0; i <cant.length; i++){
+        var inpC=cant[i];
+        var inpP=prec[i];
+        var inpS=sub[i];
+
+        inpS.value=inpC.value * inpP.value;
+        document.getElementsByName('subtotal')[i].innerHTML = inpS.value;
+    }
+    calcularTotales();
+}
+
+function calcularTotales(){
+    var sub = document.getElementsByName('subtotal');
+    var total = 0.0;
+
+    for (var i =0; i <sub.length; i++){
+        total += document.getElementsByName('subtotal')[i].value;
+    }
+    $("#total").html("S/. " + total);
+    $("#total_compra").val(total);
+    evaluar();
+}
+
+function evaluar(){
+    if (detalles>0){
+        $("#guardar").show();
+    } else {
+        $('#guardar').hide();
+        cont=0;
+    }
+}
+
+function eliminarDetalle(indice){
+
+    $("#fila" + indice).remove();
+    calcularTotales();
+    detalles=detalles-1;
 }
 
 init();
