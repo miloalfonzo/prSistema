@@ -1,4 +1,6 @@
 <?php 
+if (strlen(session_id()) < 1)
+session_start(); 
 require_once "../models/Ingreso.php";
 
 $ingreso= new Ingreso();
@@ -7,7 +9,7 @@ $idingreso = isset($_POST["idingreso"])? limpiarCadena($_POST["idingreso"]
 ): "";
 $idproveedor = isset($_POST["idproveedor"])? limpiarCadena($_POST["idproveedor"]
 ): "";
-$idusuario =$_SESSION['idusuario'];
+$idusuario=$_SESSION['idusuario'];
 $serie_comprobante = isset($_POST["serie_comprobante"])? limpiarCadena($_POST["serie_comprobante"]
 ): "";
 $num_comprobante = isset($_POST["num_comprobante"])? limpiarCadena($_POST["num_comprobante"]
