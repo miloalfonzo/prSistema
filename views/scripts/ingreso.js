@@ -73,6 +73,30 @@ function listar(){
     }).DataTable();
 }
 
+// Función listarArticulos
+function listarArticulos(){
+    tabla=$("#tblarticulos").dataTable({
+        "aProcessing": true, // activa el procesamiento del datatables
+        "aServerSide": true, // paginación y filtrado realizados por el servidor
+        dom: 'Bfrtip', // definimos los elementos del control de tabla
+        buttons: [
+                
+                ],
+        "ajax": {
+                url: '../ajax/ingreso.php?op=listarArticulos',
+                type: "get",
+                dataType: "json",
+                error: function(e){
+                    console.log(e.responseText);
+                }
+                },
+        "bDestroy": true,
+        "iDisplayLength": 5, //Paginación
+        "order": [[ 0, "desc" ]] //Ordenar (columna, orden)
+    }).DataTable();
+}
+
+
 //Función para guardar o editar
 function guardaryeditar(e){
     e.preventDefault(); //no se activará la accion predeterminada del evento

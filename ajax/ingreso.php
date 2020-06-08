@@ -86,6 +86,33 @@ switch ($_GET["op"]){
             echo '<option value=' . $reg->idpersona . '>' . $reg-> nombre . '</option>';
         }
     break;
+
+    case 'listarArticulos':
+        require_once '../models/Articulo.php';
+        $rspta=$articulo->listarActivos();
+        //vamos a declarar un array
+        $data= Array();
+    
+        while ($reg=$rspta->fetch_object()){
+            $data[]=array(
+                     "0"=>'<button class="btn btn-warning" onclick="agregarDetalle(
+                    '$reg->idarticulo.',\''.$reg->nombre.'\')"><span class="fa fa-plus"></span></button>',
+                     "1"=>$reg->nombre,
+                     "2"=>$reg->categoria,
+                     "3"=>$reg->codigo,
+                     "4"=>$reg->stock,
+                     "5"=>"<img src='../files/articulos/".$reg->imagen."' height='50px' width='50px' >"
+                     );
+             }
+             $results = array(
+                 "sEcho"=>1, //Información para el datatables
+                 "iTotalRecords"=>count($data), //enviamos el total registros al datatable
+                 "iTotalDisplayRecords"=>count($data), //enviamos el total registros a visualizar
+                 "aaData"=>$data);
+             echo json_encode($results);
+    
+        break;
+    break;
 }
 
 ?>

@@ -143,6 +143,44 @@ if ($_SESSION['compras']==1){
 
     </div><!-- /.content-wrapper -->
   <!--Fin-Contenido-->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" 
+  aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div clas="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;</button>
+                    <h4 class="modal-title">Seleccione un Articulo</h4>
+                </div>
+                <div clas="modal-body">
+                    <table id="tblarticulos" class="table table-striped table-bordered table-condensed 
+                    table-hover">
+                        <thead>
+                            <th>Opciones</th>
+                            <th>Nombre</th>
+                            <th>Categoria</th>
+                            <th>Código</th>
+                            <th>Stock</th>
+                            <th>Imagen</th>
+                        </thead>
+                        <tbody>                           
+                        </tbody>
+                        <tfoor>
+                            <th>Opciones</th>
+                            <th>Nombre</th>
+                            <th>Categoria</th>
+                            <th>Código</th>
+                            <th>Stock</th>
+                            <th>Imagen</th>
+                        </tfoot>
+                    </table>
+                </div>
+                <div clas="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 <?php
 } else {
     require 'noacceso.php';
