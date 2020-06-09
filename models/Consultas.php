@@ -42,6 +42,13 @@ Class Consultas {
         return ejecutarConsulta($sql);
     }
 
+    public function comprasultimos_10dias(){
+        $sql="SELECT CONCAT(DAY(fecha_hora), '-', MONTH(fecha_hora)) AS fecha, SUM(
+        total_compra) as total FROM ingreso GROUP by fecha_hora ORDER BY fecha_hora
+        DESC limit 0,10";
+        return ejecutarConsulta($sql);
+    }
+
 }
 
 ?>
