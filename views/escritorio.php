@@ -13,7 +13,7 @@ require 'header.php';
 
 if ($_SESSION['escritorio']==1)
 {
-  require_once "../modelos/Consultas.php";
+  require_once "../models/Consultas.php";
   $consulta = new Consultas();
   $rsptac = $consulta->totalcomprahoy();
   $regc=$rsptac->fetch_object();
@@ -135,7 +135,7 @@ else
 require 'footer.php';
 ?>
 
-<script src="../public/js/chart.min.js"></script>
+<script src="../public/js/Chart.min.js"></script>
 <script src="../public/js/Chart.bundle.min.js"></script> 
 <script type="text/javascript">
 var ctx = document.getElementById("compras").getContext('2d');
