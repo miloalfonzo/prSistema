@@ -48,6 +48,44 @@ switch ($_GET["op"]){
        echo json_encode($rspta);
     break;
 
+    case 'listarDetalle':
+        //recibir el idingreso
+        $id=$_GET['id'];
+
+        $rspta = $ingreso->listarDetalle($id);
+
+        $total=0;
+
+        echo '<thead style="background-color:#A9DEF5">
+        <th>Opciones</th>
+        <th>Articulo</th>
+        <th>Cantidad</th>
+        <th>Precio compra</th>
+        <th>Precio venta</th>
+        <th>Subtotal</th>
+        </thead>';
+
+        while ($reg = $rspta->fetch_object()){
+            echo '<tr>
+                <td></td><td>'.$reg->nombre.'</td><td>'.$reg->cantidad.'</td>
+                <td>'.$reg->precio_compra.'</td><td>'.$reg->precio_venta.'
+                </td><td>'.$reg->precio_compra*$reg->cantidad.'</td>
+                </tr>';
+
+            $total=$total+($reg->precio_compra*$reg->cantidad);
+        }
+
+        echo ' <tfoot>
+        <th>Total</th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th><h4 id="total">S/'.$total.'</h4><input type="hidden"
+         name="total_compra" id="total_compra"></th>
+        </tfoot>';
+    break; 
+
     case 'listar':
 		$rspta=$ingreso->listar();
  		//Vamos a declarar un array
@@ -55,9 +93,9 @@ switch ($_GET["op"]){
 
  		while ($reg=$rspta->fetch_object()){
  			$data[]=array(
- 				"0"=>($reg->estado=='Aceptado')?'<button class="btn btn-warning" onclick="mostrar('.$reg->idingreso.')"><i class="fa fa-pencil"></i></button>'.
+ 				"0"=>($reg->estado=='Aceptado')?'<button class="btn btn-warning" onclick="mostrar('.$reg->idingreso.')"><i class="fa fa-eye"></i></button>'.
  					' <button class="btn btn-danger" onclick="anular('.$reg->idingreso.')"><i class="fa fa-close"></i></button>':
- 					'<button class="btn btn-warning" onclick="mostrar('.$reg->idingreso.')"><i class="fa fa-pencil"></i></button>',
+ 					'<button class="btn btn-warning" onclick="mostrar('.$reg->idingreso.')"><i class="fa fa-eye"></i></button>',
  				"1"=>$reg->fecha,
                 "2"=>$reg->proveedor,
                 "3"=>$reg->usuario,
