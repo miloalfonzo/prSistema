@@ -18,7 +18,8 @@ if ($_SESSION['almacen']==1){
                   <div class="box">
                     <div class="box-header with-border">
                           <h1 class="box-title">Articulo <button class="btn btn-success" id="btnagregar"
-                           onclick="mostrarForm(true)"><i class="fa fa-plus-circle"></i> Agregar</button></h1>
+                           onclick="mostrarForm(true)"><i class="fa fa-plus-circle"></i> Agregar 
+                           <a target="_blank" href="../reports/rtparticulos.php"><button class="btn btn-info">Reporte</button></a></button></h1>
                         <div class="box-tools pull-right">
                         </div>
                     </div>
