@@ -27,6 +27,17 @@ function limpiar(){
     $("#total_compra").val("");
     $("#filas").remove("");
     $("#total").html("0");
+
+    //obtener fecha actual
+    var now = new Date();
+    var day = ('0' + now.getDate()).slice(-2);
+    var month = ('0' + (now.getMonth() +1)).slice(-2);
+    var today = now.getFullYear()+"-"+(month)+"-"+(day);
+    $('#fecha_hora').val(today);
+
+    //marcamos el primer  tipo_documento
+    $('#tipo_comprobante').val('Boleta');
+    $('#tipo_comprobante').selectpicker('refresh');
 }
 
 //funcion mostrar form
@@ -35,7 +46,7 @@ function mostrarForm(flag){
     if (flag){
         $("#listadoregistros").hide();
         $("#formularioregistros").show();
-        $("#btnGuardar").prop('disabled',false);
+        //$("#btnGuardar").prop('disabled',false);
         $("#btnagregar").hide();
         listarArticulos();
 
@@ -147,9 +158,9 @@ function mostrar(idingreso){
         $("#idingreso").val(data.idingreso);
 
         //ocultar y mostrar botones
-        $('#guardar').show();
         $('#btnGuardar').hide();
         $('#btnCancelar').show();
+        detalles=0;
         $('#btnAgregarArt').hide();
 
     });
@@ -178,7 +189,8 @@ function anular(idingreso){
 var impuesto=18;
 var cont=0;
 var detalles=0;
-$('#guardar').hide();
+//$('#guardar').hide();
+$('#btnGuardar').hide();
 $('#tipo_comprobante').change(marcarImpuesto);
 
 function marcarImpuesto(){
@@ -249,9 +261,9 @@ function calcularTotales(){
 
 function evaluar(){
     if (detalles>0){
-        $("#guardar").show();
+        $("#btnGuardar").show();
     } else {
-        $('#guardar').hide();
+        $('#btnGuardar').hide();
         cont=0;
     }
 }
