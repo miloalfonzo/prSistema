@@ -1,5 +1,8 @@
 <?php
-session_start(); 
+ob_start();
+if (strlen(session_id()) < 1){
+	session_start();//validamos si existe o no la sesión
+}
 require_once "../models/Usuario.php";
 
 $usuario=new Usuario();
@@ -18,83 +21,147 @@ $imagen=isset($_POST["imagen"])? limpiarCadena($_POST["imagen"]):"";
 
 switch ($_GET["op"]){
 	case 'guardaryeditar':
-
-		if (!file_exists($_FILES['imagen']['tmp_name']) || !is_uploaded_file($_FILES['imagen']['tmp_name']))
+		if (!isset($_SESSION["nombre"]))
 		{
-			$imagen=$_POST["imagenactual"];
+		  header("Location: ../views/login.html");
+		  //validamos el acceso solo a los usuarios logueados al sistema.
 		}
-		else 
+		else
 		{
-			$ext = explode(".", $_FILES["imagen"]["name"]);
-			if ($_FILES['imagen']['type'] == "image/jpg" || $_FILES['imagen']['type'] == "image/jpeg" || $_FILES['imagen']['type'] == "image/png")
-			{
-				$imagen = round(microtime(true)) . '.' . end($ext);
-				move_uploaded_file($_FILES["imagen"]["tmp_name"], "../files/usuarios/" . $imagen);
+			//validamos el acceso solo al usuario logueado y autorizado.
+			if ($_SESSION['almacen']==1){
+				if (!file_exists($_FILES['imagen']['tmp_name']) || !is_uploaded_file($_FILES['imagen']
+				['tmp_name']))
+				{
+					$imagen=$_POST["imagenactual"];
+				}
+				else {
+					$ext = explode(".", $_FILES["imagen"]["name"]);
+					if ($_FILES['imagen']['type'] == "image/jpg" || $_FILES['imagen']['type'] == "image/jpeg" || $_FILES['imagen']['type'] == "image/png")
+					{
+						$imagen = round(microtime(true)) . '.' . end($ext);
+						move_uploaded_file($_FILES["imagen"]["tmp_name"], "../files/usuarios/" . $imagen);
+					}
+				}
+				//Hash SHA256 en la contraseña
+				$clavehash=hash("SHA256",$clave);
+
+				if (empty($idusuario)){
+					$rspta=$usuario->insertar($nombre,$tipo_documento,$num_documento,$direccion,
+					$telefono,$email,$cargo,$login,$clavehash,$imagen,$_POST['permiso']);
+					echo $rspta ? "Usuario registrado" : "No se pudieron registrar todos los datos del usuario";
+				}
+				else {
+					$rspta=$usuario->editar($idusuario,$nombre,$tipo_documento,$num_documento,$direccion,
+					$telefono,$email,$cargo,$login,$clavehash,$imagen,$_POST['permiso']);
+					echo $rspta ? "Usuario actualizado" : "Usuario no se pudo actualizar";
+				}
+			//fin de las validaciones de acceso
 			}
-		}
-		//Hash SHA256 en la contraseña
-		$clavehash=hash("SHA256",$clave);
-
-		if (empty($idusuario)){
-			$rspta=$usuario->insertar($nombre,$tipo_documento,$num_documento,$direccion,$telefono,$email,$cargo,$login,$clavehash,$imagen,$_POST['permiso']);
-			echo $rspta ? "Usuario registrado" : "No se pudieron registrar todos los datos del usuario";
-		}
-		else {
-			$rspta=$usuario->editar($idusuario,$nombre,$tipo_documento,$num_documento,$direccion,$telefono,$email,$cargo,$login,$clavehash,$imagen,$_POST['permiso']);
-			echo $rspta ? "Usuario actualizado" : "Usuario no se pudo actualizar";
-		}
+			else
+			{
+		  	require 'noacceso.php';
+			}
+		}		
 	break;
 
 	case 'desactivar':
-		$rspta=$usuario->desactivar($idusuario);
- 		echo $rspta ? "Usuario Desactivado" : "Usuario no se puede desactivar";
+		if (!isset($_SESSION["nombre"])){
+		  header("Location: ../views/login.html");//Validamos el acceso solo a los usuarios logueados al sistema.
+		}
+		else{
+			//validamos el acceso solo al usuario logueado y autorizado.
+			if ($_SESSION['almacen']==1){
+				$rspta=$usuario->desactivar($idusuario);
+ 				echo $rspta ? "Usuario Desactivado" : "Usuario no se puede desactivar";
+			//fin de las validaciones de acceso
+			} else {
+		  	require 'noacceso.php';
+			}
+		}		
 	break;
 
 	case 'activar':
-		$rspta=$usuario->activar($idusuario);
- 		echo $rspta ? "Usuario activado" : "Usuario no se puede activar";
+		if (!isset($_SESSION["nombre"])){
+		  header("Location: ../views/login.html");
+		  //validamos el acceso solo a los usuarios logueados al sistema.
+		}
+		else {
+			//validamos el acceso solo al usuario logueado y autorizado.
+			if ($_SESSION['almacen']==1){
+				$rspta=$usuario->activar($idusuario);
+ 				echo $rspta ? "Usuario activado" : "Usuario no se puede activar";
+			//fin de las validaciones de acceso
+			}else {
+		  	require 'noacceso.php';
+			}
+		}		
 	break;
 
 	case 'mostrar':
-		$rspta=$usuario->mostrar($idusuario);
- 		//Codificar el resultado utilizando json
- 		echo json_encode($rspta);
+		if (!isset($_SESSION["nombre"])){
+		  header("Location: ../views/login.html");
+		  //validamos el acceso solo a los usuarios logueados al sistema.
+		}
+		else {
+			//validamos el acceso solo al usuario logueado y autorizado.
+			if ($_SESSION['almacen']==1) {
+				$rspta=$usuario->mostrar($idusuario);
+		 		//codificar el resultado utilizando json
+		 		echo json_encode($rspta);
+			//fin de las validaciones de acceso
+			} else {
+		  	require 'noacceso.php';
+			}
+		}		
 	break;
 
 	case 'listar':
-		$rspta=$usuario->listar();
- 		//Vamos a declarar un array
- 		$data= Array();
+		if (!isset($_SESSION["nombre"])) {
+		  header("Location: ../views/login.html");//Validamos el acceso solo a los usuarios logueados al sistema.
+		}
+		else {
+			//Validamos el acceso solo al usuario logueado y autorizado.
+			if ($_SESSION['almacen']==1) {
+				$rspta=$usuario->listar();
+		 		//Vamos a declarar un array
+		 		$data= Array();
 
- 		while ($reg=$rspta->fetch_object()){
- 			$data[]=array(
- 				"0"=>($reg->condicion)?'<button class="btn btn-warning" onclick="mostrar('.$reg->idusuario.')"><i class="fa fa-pencil"></i></button>'.
- 					' <button class="btn btn-danger" onclick="desactivar('.$reg->idusuario.')"><i class="fa fa-close"></i></button>':
- 					'<button class="btn btn-warning" onclick="mostrar('.$reg->idusuario.')"><i class="fa fa-pencil"></i></button>'.
- 					' <button class="btn btn-primary" onclick="activar('.$reg->idusuario.')"><i class="fa fa-check"></i></button>',
- 				"1"=>$reg->nombre,
- 				"2"=>$reg->tipo_documento,
- 				"3"=>$reg->num_documento,
- 				"4"=>$reg->telefono,
- 				"5"=>$reg->email,
- 				"6"=>$reg->login,
- 				"7"=>"<img src='../files/usuarios/".$reg->imagen."' height='50px' width='50px' >",
- 				"8"=>($reg->condicion)?'<span class="label bg-green">Activado</span>':
- 				'<span class="label bg-red">Desactivado</span>'
- 				);
- 		}
- 		$results = array(
- 			"sEcho"=>1, //Información para el datatables
- 			"iTotalRecords"=>count($data), //enviamos el total registros al datatable
- 			"iTotalDisplayRecords"=>count($data), //enviamos el total registros a visualizar
- 			"aaData"=>$data);
- 		echo json_encode($results);
-
+		 		while ($reg=$rspta->fetch_object()){
+		 			$data[]=array(
+		 				"0"=>($reg->condicion)?'<button class="btn btn-warning" onclick="mostrar('.$reg->idusuario.')"><i class="fa fa-pencil"></i></button>'.
+		 					' <button class="btn btn-danger" onclick="desactivar('.$reg->idusuario.')"><i class="fa fa-close"></i></button>':
+		 					'<button class="btn btn-warning" onclick="mostrar('.$reg->idusuario.')"><i class="fa fa-pencil"></i></button>'.
+		 					' <button class="btn btn-primary" onclick="activar('.$reg->idusuario.')"><i class="fa fa-check"></i></button>',
+		 				"1"=>$reg->nombre,
+		 				"2"=>$reg->tipo_documento,
+		 				"3"=>$reg->num_documento,
+		 				"4"=>$reg->telefono,
+		 				"5"=>$reg->email,
+		 				"6"=>$reg->login,
+		 				"7"=>"<img src='../files/usuarios/".$reg->imagen."' height='50px' width='50px' >",
+		 				"8"=>($reg->condicion)?'<span class="label bg-green">Activado</span>':
+		 				'<span class="label bg-red">Desactivado</span>'
+		 				);
+		 		}
+		 		$results = array(
+		 			"sEcho"=>1, //Información para el datatables
+		 			"iTotalRecords"=>count($data), //enviamos el total registros al datatable
+		 			"iTotalDisplayRecords"=>count($data), //enviamos el total registros a visualizar
+		 			"aaData"=>$data);
+		 		echo json_encode($results);
+			//Fin de las validaciones de acceso
+			}
+			else
+			{
+		  	require 'noacceso.php';
+			}
+		}
 	break;
 
 	case 'permisos':
 		//Obtenemos todos los permisos de la tabla permisos
-		require_once "../modelos/Permiso.php";
+		require_once "../models/Permiso.php";
 		$permiso = new Permiso();
 		$rspta = $permiso->listar();
 
@@ -131,19 +198,19 @@ switch ($_GET["op"]){
 
 		if (isset($fetch))
 	    {
-	        //declaramos variables de sesión
+	        //Declaramos las variables de sesión
 	        $_SESSION['idusuario']=$fetch->idusuario;
 	        $_SESSION['nombre']=$fetch->nombre;
 	        $_SESSION['imagen']=$fetch->imagen;
 	        $_SESSION['login']=$fetch->login;
 
-	        //obtenemos permisos del usuario
+	        //Obtenemos los permisos del usuario
 	    	$marcados = $usuario->listarmarcados($fetch->idusuario);
 
-	    	//declaramos el array para almacenar todos los permisos marcados
+	    	//Declaramos el array para almacenar todos los permisos marcados
 			$valores=array();
 
-			//almacenamos  permisos marcados en el array
+			//Almacenamos los permisos marcados en el array
 			while ($per = $marcados->fetch_object())
 				{
 					array_push($valores, $per->idpermiso);
@@ -172,4 +239,5 @@ switch ($_GET["op"]){
 
 	break;
 }
+ob_end_flush();
 ?>

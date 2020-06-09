@@ -1,11 +1,22 @@
 <?php 
+ob_start();
+if (strlen(session_id()) < 1){
+	session_start();//validamos si existe o no la sesión
+}
+if (!isset($_SESSION["nombre"])){
+  header("Location: ../views/login.html");
+  //validamos el acceso solo a los usuarios logueados al sistema.
+} else
+{
+//validamos el acceso solo al usuario logueado y autorizado.
+if ($_SESSION['acceso']==1) { 
 require_once "../models/Permiso.php";
 
-$permiso = new Permiso();
+$permiso=new Permiso();
 
 switch ($_GET["op"]){
-
-    case 'listar':
+	
+	case 'listar':
 		$rspta=$permiso->listar();
  		//Vamos a declarar un array
  		$data= Array();
@@ -16,7 +27,7 @@ switch ($_GET["op"]){
  				);
  		}
  		$results = array(
- 			"sEcho"=>1, //Información para el datatables
+ 			"sEcho"=>1, //información para el datatables
  			"iTotalRecords"=>count($data), //enviamos el total registros al datatable
  			"iTotalDisplayRecords"=>count($data), //enviamos el total registros a visualizar
  			"aaData"=>$data);
@@ -24,5 +35,12 @@ switch ($_GET["op"]){
 
 	break;
 }
-
+//fin de las validaciones de acceso
+}
+else
+{
+  require 'noacceso.php';
+}
+}
+ob_end_flush();
 ?>

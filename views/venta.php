@@ -11,7 +11,7 @@ else
 {
 require 'header.php';
 
-if ($_SESSION['compras']==1)
+if ($_SESSION['ventas']==1)
 {
 ?>
 <!--Contenido-->
@@ -23,7 +23,7 @@ if ($_SESSION['compras']==1)
               <div class="col-md-12">
                   <div class="box">
                     <div class="box-header with-border">
-                          <h1 class="box-title">Ingreso <button class="btn btn-success" id="btnagregar" onclick="mostrarform(true)"><i class="fa fa-plus-circle"></i> Agregar</button> <a href="../reportes/rptingresos.php" target="_blank"><button class="btn btn-info"><i class="fa fa-clipboard"></i> Reporte</button></a></h1>
+                          <h1 class="box-title">Venta <button class="btn btn-success" id="btnagregar" onclick="mostrarform(true)"><i class="fa fa-plus-circle"></i> Agregar</button> <a href="../reportes/rptventas.php" target="_blank"><button class="btn btn-info"><i class="fa fa-clipboard"></i> Reporte</button></a></h1>
                         <div class="box-tools pull-right">
                         </div>
                     </div>
@@ -34,11 +34,11 @@ if ($_SESSION['compras']==1)
                           <thead>
                             <th>Opciones</th>
                             <th>Fecha</th>
-                            <th>Proveedor</th>
+                            <th>Cliente</th>
                             <th>Usuario</th>
                             <th>Documento</th>
                             <th>Número</th>
-                            <th>Total Compra</th>
+                            <th>Total Venta</th>
                             <th>Estado</th>
                           </thead>
                           <tbody>                            
@@ -50,7 +50,7 @@ if ($_SESSION['compras']==1)
                             <th>Usuario</th>
                             <th>Documento</th>
                             <th>Número</th>
-                            <th>Total Compra</th>
+                            <th>Total Venta</th>
                             <th>Estado</th>
                           </tfoot>
                         </table>
@@ -58,9 +58,9 @@ if ($_SESSION['compras']==1)
                     <div class="panel-body" style="height: 400px;" id="formularioregistros">
                         <form name="formulario" id="formulario" method="POST">
                           <div class="form-group col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                            <label>Proveedor(*):</label>
-                            <input type="hidden" name="idingreso" id="idingreso">
-                            <select id="idproveedor" name="idproveedor" class="form-control selectpicker" data-live-search="true" required>
+                            <label>Cliente(*):</label>
+                            <input type="hidden" name="idventa" id="idventa">
+                            <select id="idcliente" name="idcliente" class="form-control selectpicker" data-live-search="true" required>
                               
                             </select>
                           </div>
@@ -100,8 +100,8 @@ if ($_SESSION['compras']==1)
                                     <th>Opciones</th>
                                     <th>Artículo</th>
                                     <th>Cantidad</th>
-                                    <th>Precio Compra</th>
                                     <th>Precio Venta</th>
+                                    <th>Descuento</th>
                                     <th>Subtotal</th>
                                 </thead>
                                 <tfoot>
@@ -110,7 +110,7 @@ if ($_SESSION['compras']==1)
                                     <th></th>
                                     <th></th>
                                     <th></th>
-                                    <th><h4 id="total">S/. 0.00</h4><input type="hidden" name="total_compra" id="total_compra"></th> 
+                                    <th><h4 id="total">S/. 0.00</h4><input type="hidden" name="total_venta" id="total_venta"></th> 
                                 </tfoot>
                                 <tbody>
                                   
@@ -135,8 +135,8 @@ if ($_SESSION['compras']==1)
   <!--Fin-Contenido-->
 
   <!-- Modal -->
-  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal-dialog" style="width: 65% !important;">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -150,6 +150,7 @@ if ($_SESSION['compras']==1)
                 <th>Categoría</th>
                 <th>Código</th>
                 <th>Stock</th>
+                <th>Precio Venta</th>
                 <th>Imagen</th>
             </thead>
             <tbody>
@@ -161,6 +162,7 @@ if ($_SESSION['compras']==1)
                 <th>Categoría</th>
                 <th>Código</th>
                 <th>Stock</th>
+                <th>Precio Venta</th>
                 <th>Imagen</th>
             </tfoot>
           </table>
@@ -181,8 +183,10 @@ else
 
 require 'footer.php';
 ?>
-<script type="text/javascript" src="scripts/ingreso.js"></script>
+<script type="text/javascript" src="scripts/venta.js"></script>
 <?php 
 }
 ob_end_flush();
 ?>
+
+

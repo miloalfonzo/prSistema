@@ -1,44 +1,59 @@
 <?php 
+ob_start();
+if (strlen(session_id()) < 1){
+	session_start();//validamos si existe o no la sesión
+}
+if (!isset($_SESSION["nombre"]))
+{
+  header("Location: ../views/login.html");
+  //validamos el acceso solo a los usuarios logueados al sistema.
+}
+else
+{
+//validamos el acceso solo al usuario logueado y autorizado.
+if ($_SESSION['almacen']==1)
+{
 require_once "../models/Categoria.php";
 
-$categoria= new Categoria();
+$categoria=new Categoria();
 
-$idcategoria = isset($_POST["idcategoria"])? limpiarCadena($_POST["idcategoria"]
-): "";
-$nombre = isset($_POST["nombre"])? limpiarCadena($_POST["nombre"]
-): "";
-$descripcion = isset($_POST["descripcion"])? limpiarCadena($_POST["descripcion"]
-): "";
+$idcategoria=isset($_POST["idcategoria"])? limpiarCadena($_POST["idcategoria"]):"";
+$nombre=isset($_POST["nombre"])? limpiarCadena($_POST["nombre"]):"";
+$descripcion=isset($_POST["descripcion"])? limpiarCadena($_POST["descripcion"]):"";
 
 switch ($_GET["op"]){
-    case 'guardaryeditar':
-        if (empty($idcategoria)){
-            $rspta=$categoria->insertar($nombre, $descripcion);
-            echo $rspta ? "Categoria registrada" : "Categoria no se pudo registrar";
-        }
-        else {
-            $rspta=$categoria->editar($idcategoria, $nombre, $descripcion);
-            echo $rspta ? "Categoria actualizada" : "Categoria no se pudo actualizar";
-        }
-    break;
+	case 'guardaryeditar':
 
-    case 'desactivar':
-        $rspta=$categoria->desactivar($idcategoria);
-        echo $rspta ? "Categoria desactivada" : "Categoria no se pudo desactivar";
-    break;
+		if (empty($idcategoria)){
+			$rspta=$categoria->insertar($nombre,$descripcion);
+			echo $rspta ? "Categoría registrada" : "Categoría no se pudo registrar";
+		}
+		else {
+			$rspta=$categoria->editar($idcategoria,$nombre,$descripcion);
+			echo $rspta ? "Categoría actualizada" : "Categoría no se pudo actualizar";
+		}
+	break;
 
-    case 'activar':
-        $rspta=$categoria->activar($idcategoria);
-        echo $rspta ? "Categoria activada" : "Categoria no se pudo activar";
-    break;
+	case 'desactivar':
 
-    case 'mostrar':
-        $rspta=$categoria->mostrar($idcategoria);
-       //codificar el resultado usando json
-       echo json_encode($rspta);
-    break;
+		$rspta=$categoria->desactivar($idcategoria);
+ 		echo $rspta ? "Categoría Desactivada" : "Categoría no se puede desactivar";
+	break;
 
-    case 'listar':
+	case 'activar':
+
+		$rspta=$categoria->activar($idcategoria);
+ 		echo $rspta ? "Categoría activada" : "Categoría no se puede activar";
+	break;
+
+	case 'mostrar':
+
+		$rspta=$categoria->mostrar($idcategoria);
+ 		//codificar el resultado utilizando json
+ 		echo json_encode($rspta);
+	break;
+
+	case 'listar':
 		$rspta=$categoria->listar();
  		//Vamos a declarar un array
  		$data= Array();
@@ -56,7 +71,7 @@ switch ($_GET["op"]){
  				);
  		}
  		$results = array(
- 			"sEcho"=>1, //Información para el datatables
+ 			"sEcho"=>1, //información para el datatables
  			"iTotalRecords"=>count($data), //enviamos el total registros al datatable
  			"iTotalDisplayRecords"=>count($data), //enviamos el total registros a visualizar
  			"aaData"=>$data);
@@ -64,5 +79,12 @@ switch ($_GET["op"]){
 
 	break;
 }
-
+//fin de las validaciones de acceso
+}
+else
+{
+  require 'noacceso.php';
+}
+}
+ob_end_flush();
 ?>

@@ -1,4 +1,18 @@
 <?php 
+ob_start();
+if (strlen(session_id()) < 1){
+	session_start();//validamos si existe o no la sesión
+}
+if (!isset($_SESSION["nombre"]))
+{
+  header("Location: ../views/login.html");
+  //validamos el acceso solo a los usuarios logueados al sistema.
+}
+else
+{
+//validamos el acceso solo al usuario logueado y autorizado.
+if ($_SESSION['almacen']==1)
+{	
 require_once "../models/Articulo.php";
 
 $articulo=new Articulo();
@@ -14,11 +28,11 @@ $imagen=isset($_POST["imagen"])? limpiarCadena($_POST["imagen"]):"";
 switch ($_GET["op"]){
 	case 'guardaryeditar':
 
-		if (!file_exists($_FILES['imagen']['tmp_name']) || !is_uploaded_file($_FILES['imagen']['tmp_name'])){
+		if (!file_exists($_FILES['imagen']['tmp_name']) || !is_uploaded_file($_FILES['imagen']['tmp_name']))
+		{
 			$imagen=$_POST["imagenactual"];
 		}
-		else 
-		{
+		else {
 			$ext = explode(".", $_FILES["imagen"]["name"]);
 			if ($_FILES['imagen']['type'] == "image/jpg" || $_FILES['imagen']['type'] == "image/jpeg" || $_FILES['imagen']['type'] == "image/png")
 			{
@@ -39,20 +53,17 @@ switch ($_GET["op"]){
 	case 'desactivar':
 		$rspta=$articulo->desactivar($idarticulo);
  		echo $rspta ? "Artículo Desactivado" : "Artículo no se puede desactivar";
- 		break;
 	break;
 
 	case 'activar':
 		$rspta=$articulo->activar($idarticulo);
  		echo $rspta ? "Artículo activado" : "Artículo no se puede activar";
- 		break;
 	break;
 
 	case 'mostrar':
 		$rspta=$articulo->mostrar($idarticulo);
  		//codificar el resultado utilizando json
  		echo json_encode($rspta);
- 		break;
 	break;
 
 	case 'listar':
@@ -62,8 +73,10 @@ switch ($_GET["op"]){
 
  		while ($reg=$rspta->fetch_object()){
  			$data[]=array(
- 				"0"=>($reg->condicion)?'<button class="btn btn-warning" onclick="mostrar('.$reg->idarticulo.')"><i class="fa fa-pencil"></i></button>'.
- 					' <button class="btn btn-danger" onclick="desactivar('.$reg->idarticulo.')"><i class="fa fa-close"></i></button>':
+				 "0"=>($reg->condicion)?'<button class="btn btn-warning" onclick="mostrar('.$reg->idarticulo.')">
+				 	<i class="fa fa-pencil"></i></button>'.
+					' <button class="btn btn-danger" onclick="desactivar('.$reg->idarticulo.')"><i class="fa fa-close">
+					 </i></button>':
  					'<button class="btn btn-warning" onclick="mostrar('.$reg->idarticulo.')"><i class="fa fa-pencil"></i></button>'.
  					' <button class="btn btn-primary" onclick="activar('.$reg->idarticulo.')"><i class="fa fa-check"></i></button>',
  				"1"=>$reg->nombre,
@@ -76,7 +89,7 @@ switch ($_GET["op"]){
  				);
  		}
  		$results = array(
- 			"sEcho"=>1, //Información para el datatables
+ 			"sEcho"=>1, //información para el datatables
  			"iTotalRecords"=>count($data), //enviamos el total registros al datatable
  			"iTotalDisplayRecords"=>count($data), //enviamos el total registros a visualizar
  			"aaData"=>$data);
@@ -91,10 +104,16 @@ switch ($_GET["op"]){
 		$rspta = $categoria->select();
 
 		while ($reg = $rspta->fetch_object()){
-
-			echo '<option value=' . $reg->idcategoria . '>' .$reg->nombre . 
-			'</option>';
-		}
+				echo '<option value=' . $reg->idcategoria . '>' . $reg->nombre . '</option>';
+				}
 	break;
-    }
+}
+//fin de las validaciones de acceso
+}
+else
+{
+  require 'noacceso.php';
+}
+}
+ob_end_flush();
 ?>
