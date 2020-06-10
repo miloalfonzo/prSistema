@@ -21,19 +21,16 @@ if ($_SESSION['ventas']==1)
 <body onload="window.print();">
 <?php
 
-//incluímos la clase Venta
+//Incluímos la clase Venta
 require_once "../models/Venta.php";
-
-//instanaciamos a la clase con el objeto venta
+//Instanaciamos a la clase con el objeto venta
 $venta = new Venta();
-
-//en el objeto $rspta Obtenemos los valores devueltos del método ventacabecera del modelo
+//En el objeto $rspta Obtenemos los valores devueltos del método ventacabecera del modelo
 $rspta = $venta->ventacabecera($_GET["id"]);
-
-//recorremos todos los valores obtenidos
+//Recorremos todos los valores obtenidos
 $reg = $rspta->fetch_object();
 
-//establecemos datos de la empresa
+//Establecemos los datos de la empresa
 $empresa = "Soluciones Innovadoras Perú S.A.C.";
 $documento = "20477157772";
 $direccion = "Chongoyape, José Gálvez 1368";
@@ -60,7 +57,7 @@ $email = "jcarlos.ad7@gmail.com";
       <td align="center"></td>
     </tr>
     <tr>
-        <!-- mostramos los datos del cliente en el documento HTML -->
+        <!-- Mostramos los datos del cliente en el documento HTML -->
         <td>Cliente: <?php echo $reg->cliente; ?></td>
     </tr>
     <tr>
@@ -71,7 +68,7 @@ $email = "jcarlos.ad7@gmail.com";
     </tr>    
 </table>
 <br>
-<!-- mostramos los detalles de la venta en el documento HTML -->
+<!-- Mostramos los detalles de la venta en el documento HTML -->
 <table border="0" align="center" width="300px">
     <tr>
         <td>CANT.</td>
@@ -93,7 +90,8 @@ $email = "jcarlos.ad7@gmail.com";
         $cantidad+=$regd->cantidad;
     }
     ?>
-    <!-- mostramos los totales de la venta en el documento HTML -->
+
+    <!-- Mostramos los totales de la venta en el documento HTML -->
     <tr>
     <td>&nbsp;</td>
     <td align="right"><b>TOTAL:</b></td>

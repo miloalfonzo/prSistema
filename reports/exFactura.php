@@ -22,6 +22,7 @@ $documento = "20477157772";
 $direccion = "Chongoyape, José Gálvez 1368";
 $telefono = "931742904";
 $email = "jcarlos.ad7@gmail.com";
+
 //obtener datos de la cabecera de la venta actual
 require_once "../models/Venta.php";
 $venta= new Venta();

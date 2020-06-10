@@ -42,7 +42,7 @@ $pdf->Cell(35,6,utf8_decode('Descripción'),1,0,'C',1);
 $pdf->Ln(10);
 
 //comenzamos a crear las filas de los registros según la consulta mysql
-require_once "../modelos/Articulo.php";
+require_once "../models/Articulo.php";
 $articulo = new Articulo();
 
 $rspta = $articulo->listar();
