@@ -23,7 +23,7 @@ Class Usuario
 
 		while ($num_elementos < count($permisos))
 		{
-			$sql_detalle = "INSERT INTO usuario_permiso(idusuario, idpermiso) VALUES('$idusuarionew', '$permisos[$num_elementos]')";
+			$sql_detalle = "INSERT INTO usuario_permisos(idusuario, idpermiso) VALUES('$idusuarionew', '$permisos[$num_elementos]')";
 			ejecutarConsulta($sql_detalle) or $sw = false;
 			$num_elementos=$num_elementos + 1;
 		}
@@ -38,7 +38,7 @@ Class Usuario
 		ejecutarConsulta($sql);
 
 		//Eliminamos todos los permisos asignados para volverlos a registrar
-		$sqldel="DELETE FROM usuario_permiso WHERE idusuario='$idusuario'";
+		$sqldel="DELETE FROM usuario_permisos WHERE idusuario='$idusuario'";
 		ejecutarConsulta($sqldel);
 
 		$num_elementos=0;
@@ -46,7 +46,7 @@ Class Usuario
 
 		while ($num_elementos < count($permisos))
 		{
-			$sql_detalle = "INSERT INTO usuario_permiso(idusuario, idpermiso) VALUES('$idusuario', '$permisos[$num_elementos]')";
+			$sql_detalle = "INSERT INTO usuario_permisos(idusuario, idpermiso) VALUES('$idusuario', '$permisos[$num_elementos]')";
 			ejecutarConsulta($sql_detalle) or $sw = false;
 			$num_elementos=$num_elementos + 1;
 		}
@@ -85,7 +85,7 @@ Class Usuario
 	//Implementar un método para listar los permisos marcados
 	public function listarmarcados($idusuario)
 	{
-		$sql="SELECT * FROM usuario_permiso WHERE idusuario='$idusuario'";
+		$sql="SELECT * FROM usuario_permisos WHERE idusuario='$idusuario'";
 		return ejecutarConsulta($sql);
 	}
 
