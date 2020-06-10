@@ -1,6 +1,6 @@
 <?php 
 //ip de la pc servidor de base de datos
-define('DB_HOST', '@us-cdbr-east-05.cleardb.net');
+define('DB_HOST', 'us-cdbr-east-05.cleardb.net');
 
 define('DB_NAME', 'heroku_377315f10593325');
 
